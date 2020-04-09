@@ -13,9 +13,13 @@ class Agent:
         self.nA = nA
         self.Q = defaultdict(lambda: np.zeros(self.nA))
         self.epsilon = 1
+        self.epsilon_decay_rate = 0.9999
+        self.q_learning_alpha = 0.01
+        self.expected_sarsa_alpha = 1
+        self.gamma = 1
 
         
-    def select_action(self, state, episode_num):
+    def select_action(self, state, episode_num, num_episodes):
         """ Given the state, select an action.
 
         Params
@@ -26,8 +30,9 @@ class Agent:
         =======
         - action: an integer, compatible with the task's action space
         """
-        #Update Epsilon based on the episode number
-        self.epsilon /= episode_num
+        #Update Epsilon (two different options)
+        #self.epsilon *= self.epsilon_decay_rate
+        self.epsilon /= num_episodes
         
         #Set up epsilon greedy policy
         policy = np.ones(self.nA)*(self.epsilon/self.nA)
@@ -48,8 +53,14 @@ class Agent:
         - next_state: the current state of the environment
         - done: whether the episode is complete (True or False)
         """
-        #Q-Learning off policy solution with constant learning rate 
-        alpha = 0.1
-        gamma = 1
-        self.Q[state][action] = (1-alpha)*self.Q[state][action] + alpha*(reward + gamma*np.max(self.Q[next_state]))
+        #Two options below Q-Learning and Expected Sarsa
+        
+        #Q-Learning off policy solution with constant learning rate
+        #self.Q[state][action] = (1-self.q_learning_alpha)*self.Q[state][action] + self.q_learning_alpha*(reward + self.gamma*np.max(self.Q[next_state]))
+        
+        #Expected Sars on policy solution with constant learning rate
+        next_state_policy = np.ones(self.nA)*(self.epsilon/self.nA)
+        next_state_policy[np.argmax(self.Q[next_state])] += 1-self.epsilon
+        self.Q[state][action] = (1-self.expected_sarsa_alpha)*self.Q[state][action] + self.expected_sarsa_alpha*(reward + self.gamma*np.dot(self.Q[next_state], next_state_policy))
+        
         
