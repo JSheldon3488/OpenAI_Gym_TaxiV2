@@ -15,3 +15,12 @@ There are four locations (R,G,Y,B) and the job of the agent is to pick up a pass
     4: pickup passenger,
     5: dropoff passenger
 
+## Agents
+
+## Hyperparameters
+
+## Dependencies
+  * [OpenAI Gym](https://gym.openai.com/) 
+  * [Matplotlib](https://matplotlib.org/)
+  * [Numpy](https://numpy.org/)
+  
