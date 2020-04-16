@@ -8,10 +8,10 @@ There are four locations (R,G,Y,B) and the job of the agent is to pick up a pass
 **State Space:** (taxi_row, taxi_col, passenger_location, destination)
 
 **Action Space:** 
-  * 0: move south
-  * 1: move north
-  * 2: move east
-  * 3: move west
-  * 4: pickup passenger
-  * 5: dropoff passenger
+    0: move south
+    1: move north
+    2: move east
+    3: move west
+    4: pickup passenger
+    5: dropoff passenger
 
