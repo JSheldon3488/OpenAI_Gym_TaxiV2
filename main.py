@@ -4,7 +4,7 @@ from simulation import *
 import gym
 import numpy as np
 
-env = gym.make('Taxi-v2')
+env = gym.make('Taxi-v3')
 alpha_grid, average_rewards_per_alpha = sarsa_simulation(env)
 display_sim("Sarsa", alpha_grid, average_rewards_per_alpha)
 

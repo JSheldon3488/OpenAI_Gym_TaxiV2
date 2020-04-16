@@ -12,7 +12,7 @@ class Sarsa_Agent:
         self.nA = nA
         self.Q = defaultdict(lambda: np.zeros(self.nA))
         self.epsilon = 1
-        self.epsilon_decay_rate = 0.9999
+        self.epsilon_decay_rate = 0.9995
         self.alpha = alpha
         self.gamma = 1
 
@@ -29,7 +29,7 @@ class Sarsa_Agent:
         - action: an integer, compatible with the task's action space
         """
         #Update Epsilon
-        self.epsilon *= self.epsilon_decay_rate
+        self.epsilon = max(self.epsilon*self.epsilon_decay_rate, 0.01)
         
         #Set up epsilon greedy policy
         policy = np.ones(self.nA)*(self.epsilon/self.nA)
@@ -71,7 +71,7 @@ class Expected_Sarsa_Agent:
         self.nA = nA
         self.Q = defaultdict(lambda: np.zeros(self.nA))
         self.epsilon = 1
-        self.epsilon_decay_rate = 0.9999
+        self.epsilon_decay_rate = 0.9995
         self.alpha = alpha
         self.gamma = 1
 
@@ -88,7 +88,7 @@ class Expected_Sarsa_Agent:
         - action: an integer, compatible with the task's action space
         """
         #Update Epsilon
-        self.epsilon *= self.epsilon_decay_rate
+        self.epsilon = max(self.epsilon*self.epsilon_decay_rate, 0.01)
         
         #Set up epsilon greedy policy
         policy = np.ones(self.nA)*(self.epsilon/self.nA)
@@ -130,7 +130,7 @@ class QLearning_Agent:
         self.nA = nA
         self.Q = defaultdict(lambda: np.zeros(self.nA))
         self.epsilon = 1
-        self.epsilon_decay_rate = 0.9999
+        self.epsilon_decay_rate = 0.9995
         self.alpha = alpha
         self.gamma = 1
 
@@ -147,7 +147,7 @@ class QLearning_Agent:
         - action: an integer, compatible with the task's action space
         """
         #Update Epsilon
-        self.epsilon *= self.epsilon_decay_rate
+        self.epsilon = max(self.epsilon*self.epsilon_decay_rate, 0.01)
         
         #Set up epsilon greedy policy
         policy = np.ones(self.nA)*(self.epsilon/self.nA)
