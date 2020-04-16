@@ -2,10 +2,9 @@ from agents import *
 from monitor import interact
 import matplotlib.pyplot as plt
 import numpy as np
-import os
 
 
-#Create simulation to find good alpha for Sarsa Agent
+# Create simulation to find good alpha for Sarsa Agent
 def sarsa_simulation(env):
     num_sims = 20;
     alpha_grid = np.arange(0.01,0.25,0.01)
@@ -25,7 +24,7 @@ def sarsa_simulation(env):
 
     return alpha_grid, np.asarray(average_rewards_per_alpha)
 
-#Create simulation to find good alpha for Expected Sarsa Agent
+# Create simulation to find good alpha for Expected Sarsa Agent
 def expected_sarsa_simulation(env):
     num_sims = 20;
     alpha_grid = np.arange(0.01, 0.25, 0.01)
@@ -45,10 +44,10 @@ def expected_sarsa_simulation(env):
 
     return alpha_grid, np.asarray(average_rewards_per_alpha)
 
-#Create simulation to find good alpha for QLearning Agent
+# Create simulation to find good alpha for QLearning Agent
 def qlearning_simulation(env):
     num_sims = 20;
-    alpha_grid = np.arange(0.01, 0.25, 0.01)
+    alpha_grid = np.arange(0.01, 0.3, 0.01)
     average_rewards_per_alpha = []
 
     for alpha in alpha_grid:
@@ -64,6 +63,7 @@ def qlearning_simulation(env):
         average_rewards_per_alpha.append(np.mean(sim_results))
 
     return alpha_grid, np.asarray(average_rewards_per_alpha)
+
 
 #Function to display results of simulations
 def display_sim(modelName, grid, results):
