@@ -22,8 +22,8 @@ There are four locations (R,G,Y,B) and the job of the agent is to pick up a pass
 In an attempt to find the best learning rate for the different agents I ran a grid search simulation for each agent. I ran 20 simulations for learning rates in the range of 0.01-0.25 incremented by 0.01 each time and took the average of the results. The results are below. It appears that learning rates between 0.05 and 0.25 have similar results (while holding exploration rate constant).
 
 <p align="center">
-    <img src="/images/Sarsa.png" width="400" height="360">
-    <img src="/images/Expected_Sarsa.png" width="400" height="360">
+    <img src="/images/Sarsa.png" width="400" height="320">
+    <img src="/images/Expected_Sarsa.png" width="400" height="320">
 </p>
 <p align="center">
     <img src="/images/Q_Learning.png" width="480" height="360">
