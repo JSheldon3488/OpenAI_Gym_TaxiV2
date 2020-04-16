@@ -4,69 +4,57 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 
-# Create simulation to find good alpha for Sarsa Agent
-def sarsa_simulation(env):
-    num_sims = 20;
-    alpha_grid = np.arange(0.01,0.25,0.01)
-    average_rewards_per_alpha = []
-    
+def learningRate_gridSearch(env, Agent, num_sims, alpha_grid):
+    """ Run grid search simulations to find a good learning rate for different agents. Before running
+    check images directory to see if simulations already ran and just use approx. best alpha from graphs.
+
+    Params
+    ======
+    - env: the environment used to run the simulations in (from OpenAI Gym)
+    - Agent: agent used in the simulation (sarsa, expected_sarsa, Q_learning)
+    - num_sims: number of simulations per alpha (used to get an average)
+    - alpha_grid: array of all the alpha values you want to run the simulation on
+    Returns
+    =======
+    - saves resulting graphs as .png files in the images directory for each model type
+    """
+    avg_rewards_per_alpha = []
     for alpha in alpha_grid:
-        print(alpha)
         sim_results = np.empty(num_sims)
         for sim in range(num_sims):
-            #Create agent
-            sarsa_agent = Sarsa_Agent(alpha)
-            #run simulation and save result (only need best average reward)
-            _, best_avg_reward = interact(env, sarsa_agent)
+            agent = Agent(alpha)
+            # Only need best_avg_reward from each individual simulation
+            _, best_avg_reward = interact(env, agent)
             sim_results[sim] = best_avg_reward
-        #End of sim for this alpha, average and store results
-        average_rewards_per_alpha.append(np.mean(sim_results))
+        avg_rewards_per_alpha.append(np.mean(sim_results))
 
-    return alpha_grid, np.asarray(average_rewards_per_alpha)
-
-# Create simulation to find good alpha for Expected Sarsa Agent
-def expected_sarsa_simulation(env):
-    num_sims = 20;
-    alpha_grid = np.arange(0.01, 0.25, 0.01)
-    average_rewards_per_alpha = []
-
-    for alpha in alpha_grid:
-        print(alpha)
-        sim_results = np.empty(num_sims)
-        for sim in range(num_sims):
-            # Create agent
-            expected_sarsa_agent = Expected_Sarsa_Agent(alpha)
-            # run simulation and save result (only need best average reward)
-            _, best_avg_reward = interact(env, expected_sarsa_agent)
-            sim_results[sim] = best_avg_reward
-        # End of sim for this alpha, average and store results
-        average_rewards_per_alpha.append(np.mean(sim_results))
-
-    return alpha_grid, np.asarray(average_rewards_per_alpha)
-
-# Create simulation to find good alpha for QLearning Agent
-def qlearning_simulation(env):
-    num_sims = 20;
-    alpha_grid = np.arange(0.01, 0.3, 0.01)
-    average_rewards_per_alpha = []
-
-    for alpha in alpha_grid:
-        print(alpha)
-        sim_results = np.empty(num_sims)
-        for sim in range(num_sims):
-            # Create agent
-            qlearning_agent = QLearning_Agent(alpha)
-            # run simulation and save result (only need best average reward)
-            _, best_avg_reward = interact(env, qlearning_agent)
-            sim_results[sim] = best_avg_reward
-        # End of sim for this alpha, average and store results
-        average_rewards_per_alpha.append(np.mean(sim_results))
-
-    return alpha_grid, np.asarray(average_rewards_per_alpha)
+    # Create and save graph with the results from the simulation
+    display_sim(Agent, alpha_grid, avg_rewards_per_alpha)
 
 
 #Function to display results of simulations
-def display_sim(modelName, grid, results):
+def display_sim(modelName, grid, results, display = True, save = True):
+    """ Displays and/or saves the results of the simulations
+
+    Params
+    ======
+    - modelName: The Agent Class used in the simulation
+    - grid: the numpy array of values (x axis)
+    - results: the numpy array of simulation results (y axis)
+    - display: bool for whether or not to show the graph (default True)
+    - save: bool for whether or not to save the graphs (default True)
+    Returns
+    =======
+    - potentially shows and ssaves resulting graphs as .png files in the images directory for each model type
+    """
+    # Turn modelName from Class type to string for graphing
+    if modelName == Sarsa_Agent:
+        modelName = "Sarsa"
+    elif modelName == Expected_Sarsa_Agent:
+        modelName = "Expected_Sarsa"
+    elif modelName == QLearning_Agent:
+        modelName = "Q_Learning"
+
     #Set up plots
     fig, ax = plt.subplots()
     ax.plot(grid, results)
@@ -82,13 +70,12 @@ def display_sim(modelName, grid, results):
     kw = dict(xycoords='data',textcoords="axes fraction",
               arrowprops=arrowprops, bbox=bbox_props, ha="right", va="top")
     ax.annotate(text, xy=(xmax, ymax), xytext=(0.94,0.96), **kw)
-
     #Set y lim so the annotation looks good
     ax.set_ylim(np.min(results), np.max(results)+0.1)
 
-    #Save graph
-    filepath = f"C:\Dev\Python\RL\Taxi_Problem\images\\{modelName}.png"
-    fig.savefig(filepath)
+    if save:
+        filepath = f"C:\Dev\Python\RL\Taxi_Problem\images\\{modelName}.png"
+        fig.savefig(filepath)
 
-    #Look at result
-    #plt.show()
+    if display:
+        plt.show()
