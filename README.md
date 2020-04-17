@@ -30,7 +30,13 @@ In an attempt to find the best learning rate for the different agents I ran a gr
 </p>
 
 ### Exploration Rate (epsilon)
+In an attempt to find the best exploration strategy I ran experiements for all three agents with vary degrees of exploration. The results are in the graphs below. Agents with high exploration rates seemed to find good strategies faster and they all converged to good strategies in the long run. To see if any one strategy was better in the long run I ran all three agents for 50000 episodes and the results are in the table below.
 
+| Agent | Low | Medium | High |
+| ----- | --- | ------ | ---- |
+| Sarsa | 8.72 | 8.59 | 8.9 |
+| Expected Sarsa | 8.98 | 8.55 | 8.91 |
+| Q_Learning | 8.83 | 8.65 | 8.91 |
 
 <p align="center">
     <img src="/images/Sarsa_epsilon_experiment.png" width="400" height="320">
