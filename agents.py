@@ -2,17 +2,22 @@ import numpy as np
 from collections import defaultdict
 
 class Sarsa_Agent:
-    def __init__(self, alpha, nA=6):
+    def __init__(self, alpha, nA=6, decay_by_episode = False, decay_capped_min = False):
         """ Initialize agent.
 
         Params
         ======
+        - alpha: used to set the update learning rate
         - nA: number of actions available to the agent
+        - decay_by_episode: bool used to specify exploration strategy
+        - decay_capped_min: bool used to specify exploration strategy
         """
         self.nA = nA
         self.Q = defaultdict(lambda: np.zeros(self.nA))
         self.epsilon = 1
-        self.epsilon_decay_rate = 0.9995
+        self.epsilon_decay_rate = 0.9999
+        self.decay_by_episode = decay_by_episode
+        self.decay_capped_min = decay_capped_min
         self.alpha = alpha
         self.gamma = 1
 
@@ -28,8 +33,13 @@ class Sarsa_Agent:
         =======
         - action: an integer, compatible with the task's action space
         """
-        #Update Epsilon
-        self.epsilon = max(self.epsilon*self.epsilon_decay_rate, 0.01)
+        #Update Epsilon (based on different epsilon strategies)
+        if (self.decay_by_episode):
+            self.epsilon = 1/episode_num
+        elif (self.decay_capped_min):
+            self.epsilon = max(self.epsilon*0.999, 0.01)
+        else:
+            self.epsilon *= self.epsilon_decay_rate
         
         #Set up epsilon greedy policy
         policy = np.ones(self.nA)*(self.epsilon/self.nA)
@@ -61,7 +71,7 @@ class Sarsa_Agent:
         
         
 class Expected_Sarsa_Agent:
-    def __init__(self, alpha, nA=6):
+    def __init__(self, alpha, nA=6, decay_by_episode = False, decay_capped_min = False):
         """ Initialize agent.
 
         Params
@@ -71,7 +81,9 @@ class Expected_Sarsa_Agent:
         self.nA = nA
         self.Q = defaultdict(lambda: np.zeros(self.nA))
         self.epsilon = 1
-        self.epsilon_decay_rate = 0.9995
+        self.epsilon_decay_rate = 0.9999
+        self.decay_by_episode = decay_by_episode
+        self.decay_capped_min = decay_capped_min
         self.alpha = alpha
         self.gamma = 1
 
@@ -87,8 +99,13 @@ class Expected_Sarsa_Agent:
         =======
         - action: an integer, compatible with the task's action space
         """
-        #Update Epsilon
-        self.epsilon = max(self.epsilon*self.epsilon_decay_rate, 0.01)
+        #Update Epsilon (based on different epsilon strategies)
+        if (self.decay_by_episode):
+            self.epsilon = 1/episode_num
+        elif (self.decay_capped_min):
+            self.epsilon = max(self.epsilon*0.999, 0.01)
+        else:
+            self.epsilon *= self.epsilon_decay_rate
         
         #Set up epsilon greedy policy
         policy = np.ones(self.nA)*(self.epsilon/self.nA)
@@ -120,7 +137,7 @@ class Expected_Sarsa_Agent:
         
         
 class QLearning_Agent:
-    def __init__(self, alpha, nA=6):
+    def __init__(self, alpha, nA=6, decay_by_episode = False, decay_capped_min = False):
         """ Initialize agent.
 
         Params
@@ -130,7 +147,9 @@ class QLearning_Agent:
         self.nA = nA
         self.Q = defaultdict(lambda: np.zeros(self.nA))
         self.epsilon = 1
-        self.epsilon_decay_rate = 0.9995
+        self.epsilon_decay_rate = 0.9999
+        self.decay_by_episode = decay_by_episode
+        self.decay_capped_min = decay_capped_min
         self.alpha = alpha
         self.gamma = 1
 
@@ -146,8 +165,13 @@ class QLearning_Agent:
         =======
         - action: an integer, compatible with the task's action space
         """
-        #Update Epsilon
-        self.epsilon = max(self.epsilon*self.epsilon_decay_rate, 0.01)
+        #Update Epsilon (based on different epsilon strategies)
+        if (self.decay_by_episode):
+            self.epsilon = 1/episode_num
+        elif (self.decay_capped_min):
+            self.epsilon = max(self.epsilon*0.999, 0.01)
+        else:
+            self.epsilon *= self.epsilon_decay_rate
         
         #Set up epsilon greedy policy
         policy = np.ones(self.nA)*(self.epsilon/self.nA)

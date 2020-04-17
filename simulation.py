@@ -14,6 +14,7 @@ def learningRate_gridSearch(env, Agent, num_sims, alpha_grid):
     - Agent: agent used in the simulation (sarsa, expected_sarsa, Q_learning)
     - num_sims: number of simulations per alpha (used to get an average)
     - alpha_grid: array of all the alpha values you want to run the simulation on
+
     Returns
     =======
     - saves resulting graphs as .png files in the images directory for each model type
@@ -32,7 +33,6 @@ def learningRate_gridSearch(env, Agent, num_sims, alpha_grid):
     display_sim(Agent, alpha_grid, avg_rewards_per_alpha)
 
 
-#Function to display results of simulations
 def display_sim(modelName, grid, results, display = True, save = True):
     """ Displays and/or saves the results of the simulations
 
@@ -43,6 +43,7 @@ def display_sim(modelName, grid, results, display = True, save = True):
     - results: the numpy array of simulation results (y axis)
     - display: bool for whether or not to show the graph (default True)
     - save: bool for whether or not to save the graphs (default True)
+
     Returns
     =======
     - potentially shows and ssaves resulting graphs as .png files in the images directory for each model type
@@ -75,6 +76,55 @@ def display_sim(modelName, grid, results, display = True, save = True):
 
     if save:
         filepath = f"C:\Dev\Python\RL\Taxi_Problem\images\\{modelName}.png"
+        fig.savefig(filepath)
+
+    if display:
+        plt.show()
+
+
+def epsilon_experiement(env, Agent, num_episodes, display=True, save=True,):
+    """ Try out different epsilon (exploration rate) strategies and graph the
+
+    Params
+    ======
+    - env: the environment used to run the simulations in (from OpenAI Gym)
+    - Agent: agent used in the simulation (sarsa, expected_sarsa, Q_learning)
+    - num_episodes: the number of episodes each experiment will run
+    Returns
+    =======
+    - saves resulting graphs as .png files in the images directory for each model type
+    """
+    # Set up Graph for plotting results
+    fig, ax = plt.subplots()
+    if Agent == Sarsa_Agent:
+        modelName = "Sarsa"
+    elif Agent == Expected_Sarsa_Agent:
+        modelName = "Expected_Sarsa"
+    elif Agent == QLearning_Agent:
+        modelName = "Q_Learning"
+    ax.set(xlabel = "Episode Number", ylabel = "Reward", title = f"Exploration Strategy Comparison for {modelName} Agent")
+    ax.grid()
+
+    #Run the experiements
+    # Epsilon decay at rate = 1/num_episode (after 100 episodes only 1% exploration)
+    agent = Agent(0.1, decay_by_episode=True)
+    avg_rewards, best_avg_reward = interact(env, agent, num_episodes=num_episodes)
+    ax.plot(range(10,len(avg_rewards)), list(avg_rewards)[10:], label="low_exploration")
+
+    # Epsilon decay rate = max(0.01, old_epsilon*0.999) (capped minimum exploration)
+    agent = Agent(0.1, decay_capped_min=True)
+    avg_rewards, best_avg_reward = interact(env, agent, num_episodes=num_episodes)
+    ax.plot(range(10,len(avg_rewards)), list(avg_rewards)[10:], label="medium_exploration")
+
+    # Epsilon decay rate = old_epsilon*0.9999 (lot of exploring)
+    agent = Agent(0.1)
+    avg_rewards, best_avg_reward = interact(env, agent, num_episodes=num_episodes)
+    ax.plot(range(10,len(avg_rewards)), list(avg_rewards)[10:], label="high_exploration")
+
+    #Save and/or show the results
+    ax.legend()
+    if save:
+        filepath = f"C:\Dev\Python\RL\Taxi_Problem\images\\{modelName}_epsilon_experiment.png"
         fig.savefig(filepath)
 
     if display:
