@@ -29,6 +29,17 @@ In an attempt to find the best learning rate for the different agents I ran a gr
     <img src="/images/Q_Learning.png" width="480" height="360">
 </p>
 
+### Exploration Rate (epsilon)
+
+
+<p align="center">
+    <img src="/images/Sarsa_epsilon_experiment.png" width="400" height="320">
+    <img src="/images/Expected_Sarsa_epsilon_experiment.png" width="400" height="320">
+</p>
+<p align="center">
+    <img src="/images/Q_Learning_epsilon_experiment.png" width="480" height="360">
+</p>
+
 ## Dependencies
   * [OpenAI Gym](https://gym.openai.com/) 
   * [Matplotlib](https://matplotlib.org/)
