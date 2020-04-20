@@ -1,4 +1,4 @@
-# OpenAI_Gym_TaxiV3
+# OpenAI_Gym_TaxiV3 (V2 out of date)
 OpenAI Gym Taxi problem from Deep Reinforcement Learning Udacity Nanodegree.
 
 ## Problem Statement
