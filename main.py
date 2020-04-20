@@ -3,15 +3,6 @@ from monitor import interact
 from simulation import *
 import gym
 
-'''
-sarsa_agent = Sarsa_Agent()
-expected_sarsa_agent = Expected_Sarsa_Agent()
-qlearning_agent = QLearning_Agent()
-avg_rewards, best_avg_reward = interact(env, sarsa_agent)
-avg_rewards, best_avg_reward = interact(env, expected_sarsa_agent)
-avg_rewards, best_avg_reward = interact(env, qlearning_agent)
-'''
-
 
 if __name__ == "__main__":
     env = gym.make('Taxi-v3')
@@ -30,10 +21,14 @@ if __name__ == "__main__":
     epsilon_experiement(env, QLearning_Agent, 2000,display=False)
     '''
 
-    ''' Long term experiement to see if exploration rate mattered in the long run'''
+    ''' Long term experiement to see if exploration rate mattered in the long run
     print("Sarsa Agent Results")
     epsilon_experiement(env, Sarsa_Agent, 50000, display=False, save=False)
     print("Expected Sarsa Agent Results")
     epsilon_experiement(env, Expected_Sarsa_Agent, 50000,display=False, save=False)
     print("Q_Learning Agent Results")
     epsilon_experiement(env, QLearning_Agent, 50000,display=False, save=False)
+    '''
+
+    # Compare the three agents (average over 20 runs)
+    agent_comparison(env)

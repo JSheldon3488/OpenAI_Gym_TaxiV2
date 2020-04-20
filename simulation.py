@@ -129,3 +129,79 @@ def epsilon_experiement(env, Agent, num_episodes, display=True, save=True,):
 
     if display:
         plt.show()
+
+
+def agent_comparison(env, num_episodes=40000, avg_over=20, display=True, save=True):
+    """ Compare different Agents performance by running the experiments for num_episodes avg_over times to get
+     a average of the agents performance.
+
+    Params
+    ======
+    - env: the environment used to run the simulations in (from OpenAI Gym)
+    - num_episodes: Number of episodes for each simulation
+    - avg_over: Number of times each agent will run the simulation to get an average result
+    - display: Whether or not to display the resulting graph at the end of simulation
+    - save: Whether or not to save the resulting graph
+
+    Returns
+    =======
+    - saves resulting graphs as .png files in the images directory
+    """
+    # Arrays to store the results
+    sarsa_results = np.zeros(num_episodes-99)
+    expexted_sarsa_results = np.zeros(num_episodes-99)
+    qlearning_results = np.zeros(num_episodes-99)
+
+    for _ in range(avg_over):
+        # Sarsa Experiment
+        sarsa_agent = Sarsa_Agent(0.1)
+        sarsa_avg_rewards, _ = interact(env, sarsa_agent, num_episodes=num_episodes)
+        sarsa_results += np.asarray(sarsa_avg_rewards)
+
+        # Expected Sarsa Experiment
+        expected_sarsa_agent = Expected_Sarsa_Agent(0.1)
+        expected_sarsa_avg_rewards, _ = interact(env, expected_sarsa_agent, num_episodes=num_episodes)
+        expexted_sarsa_results += np.asarray(expected_sarsa_avg_rewards)
+
+        # Qlearning Experiement
+        qlearning_agent = QLearning_Agent(0.1)
+        qlearning_avg_rewards, _ = interact(env, qlearning_agent, num_episodes=num_episodes)
+        qlearning_results += np.asarray(qlearning_avg_rewards)
+    #Averaage the results
+    sarsa_results /= 20
+    expexted_sarsa_results /= 20
+    qlearning_results /= 20
+
+    # Graph early learning results
+    fig, ax = plt.subplots()
+    ax.set(xlabel= "Episode Number", ylabel="Reward (averaged over 20 runs)", title="Comparison of Learning Agents")
+    ax.grid()
+    ax.plot(np.arange(len(sarsa_results))[:1000], sarsa_results[:1000], label="Sarsa Agent")
+    ax.plot(np.arange(len(expexted_sarsa_results))[:1000], expexted_sarsa_results[:1000], label="Expected Sarsa Agent")
+    ax.plot(np.arange(len(qlearning_results))[:1000], qlearning_results[:1000], label="Q Learning Agent")
+
+    #Save and/or show the results
+    ax.legend()
+    if save:
+        filepath = f"C:\Dev\Python\RL\Taxi_Problem\images\\Early_Agent_Comparison.png"
+        fig.savefig(filepath)
+
+    if display:
+        plt.show()
+
+    # Graph late learning results
+    fig, ax = plt.subplots()
+    ax.set(xlabel="Episode Number", ylabel="Reward (averaged over 20 runs)", title="Comparison of Learning Agents")
+    ax.grid()
+    ax.plot(np.arange(len(sarsa_results))[35000:], sarsa_results[35000:], label="Sarsa Agent")
+    ax.plot(np.arange(len(expexted_sarsa_results))[35000:], expexted_sarsa_results[35000:],label="Expected Sarsa Agent")
+    ax.plot(np.arange(len(qlearning_results))[35000:], qlearning_results[35000:], label="Q Learning Agent")
+
+    # Save and/or show the results
+    ax.legend()
+    if save:
+        filepath = f"C:\Dev\Python\RL\Taxi_Problem\images\\Late_Agent_Comparison.png"
+        fig.savefig(filepath)
+
+    if display:
+        plt.show()
