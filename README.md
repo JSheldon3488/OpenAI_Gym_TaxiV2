@@ -18,8 +18,8 @@ There are four locations (R,G,Y,B) and the job of the agent is to pick up a pass
 ## Agents
 The three agents I tried are Sarsa, Expected Sarsa, and SarsaMax (Q-Learning). The Sarsa algorithm is below. The only thing you have to change is the update equation for the three different algorithms. All three update rules are below as well.
 <p align="center">
-    <img src="/images/Sarsa_Algorithm.png">
-    <img src="/images/UpdateEquation.png">
+    <img src="/images/Sarsa_Algorithm.png" width="800 height="400">
+    <img src="/images/UpdateEquation.png" width="800 height="400">
 </p>
 
 ## Hyperparameters
